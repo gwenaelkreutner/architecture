@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User, Group
 import requests
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import viewsets, generics, status
 from rest_framework import permissions
@@ -9,6 +9,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework.parsers import JSONParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from recettela.api.serializers import UserSerializer, GroupSerializer, FoodSerializer
 from recettela.models import Food
@@ -55,34 +56,59 @@ class ListCreateFoodView(generics.ListCreateAPIView):
 
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, food_pk, format=None): #TODO verifier de ne pas supp celui dun autre
+    def delete(self, request, food_pk, format=None):  # TODO verifier de ne pas supp celui dun autre
         object = self.get_object(food_pk)
         object.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@csrf_exempt
-def food_detail(request, pk):
+class FoodList(APIView):
     """
-    Retrieve, update or delete a code snippet.
+    List all snippets, or create a new snippet.
     """
-    try:
-        snippet = Food.objects.get(pk=pk)
-    except Food.DoesNotExist:
-        return HttpResponse(status=404)
 
-    if request.method == 'GET':
-        serializer = FoodSerializer(snippet)
-        return JsonResponse(serializer.data)
+    def get(self, request, format=None):
+        foods = Food.objects.filter(fridge=request.user)
+        serializer = FoodSerializer(foods, many=True)
+        return Response(serializer.data)
 
-    elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = FoodSerializer(snippet, data=data)
+    def post(self, request, format=None):
+        serializer = FoodSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
+            serializer.save(fridge=request.user)
+            foods = Food.objects.filter(fridge=request.user)
+            serializer2 = FoodSerializer(foods, many=True)
+            return Response(serializer2.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    elif request.method == 'DELETE':
-        snippet.delete()
-        return HttpResponse(status=204)
+
+class FoodDetail(APIView):
+    """
+    Retrieve, update or delete a snippet instance.
+    """
+
+    def get_object(self, pk):
+        try:
+            return Food.objects.get(pk=pk)
+        except Food.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        foods = Food.objects.filter(fridge=request.user)
+        serializer = FoodSerializer(foods, many=True)
+        return Response(serializer.data)
+
+    def put(self, request, pk, format=None):
+        food = self.get_object(pk)
+        serializer = FoodSerializer(food, data=request.data)
+        if serializer.is_valid():
+            serializer.save(fridge=request.user)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        food = self.get_object(pk)
+        food.delete()
+        foods = Food.objects.filter(fridge=request.user)
+        serializer = FoodSerializer(foods, many=True)
+        return Response(serializer.data)

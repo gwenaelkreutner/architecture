@@ -2,15 +2,33 @@
 
 {% block title %}Fridge{% endblock %}
 
+
 {% block content %}
     <body onload=send_request_fridge()>
     <div class="container">
         <h1>Fridge</h1>
     </div>
     <div class="container">
-        <ul id="myFridge">
+        <table class="table" id="myFridge">
+            <tbody>
 
-        </ul>
+            </tbody>
+        </table>
+    </div>
+    <div class="container ">
+        <form class="needs-validation" id="formAdd">
+            <div class="row">
+                <div class="col-4">
+                    <input class="form-control" id="inputIngredient" placeholder="Ingredient" required>
+                </div>
+                <div id="datepicker" class="col-2">
+                    <input placeholder="AAAA-MM-JJ" type="text" id="inputDate" class="form-control" required>
+                </div>
+                <div class="col-2">
+                    <button type="submit" class="btn btn-primary mb-2" >ADD</button>
+                </div>
+            </div>
+        </form>
     </div>
     </body>
 {% endblock %}
