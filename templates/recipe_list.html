@@ -7,29 +7,6 @@
     <div class="container">
         <h1>Recipe</h1>
     </div>
-
-
-    <div class="container">
-        <div class="input-group">
-
-            <select onchange="job_type(this.value);">
-                <option value="" selected disabled>Type</option>
-                <option value="office">Office</option>
-                <option value="remote">Remote</option>
-            </select>
-
-            <select onchange="sort_jobs(this.value);">
-                <option value="" selected disabled>Date</option>
-                <option value="descending">Oldest</option>
-                <option value="ascending">Latest</option>
-            </select>
-
-            <input type="text" id="location" size="50" placeholder="Location...">
-            <button class="btn btn-outline-primary" onClick="find_location();" type="button">Search</button>
-
-        </div>
-    </div>
-
     <div class="container">
         <table class="table" id="myTable">
             <thead class="thead-dark">
@@ -37,7 +14,7 @@
                 <th>Title</th>
                 <th>Image</th>
                 <th>Used Ingredient</th>
-                <th>Link</th>
+                <th>More</th>
             </tr>
             </thead>
             <tbody>

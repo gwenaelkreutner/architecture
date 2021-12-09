@@ -3,8 +3,19 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
+    <body onload=send_request_fridge(false)>
+
     <h1>Dashboard</h1>
+    <div class="container">
+        <table class="table" id="myFridge">
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
     <p>Welcome to Your Dashboard.
         <a href="{% url "edit" %}">Edit Your Profile</a></p>
+    </body>
+
 
 {% endblock %}

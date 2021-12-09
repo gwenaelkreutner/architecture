@@ -22,14 +22,14 @@
     <span class="logo">Recettela</span>
     {% if request.user.is_authenticated %}
         <ul class="menu">
-            <li {% if section == "dashboard" %} class="selected"{% endif %}
+            <li {% if section == "dashboard" %} class="selected"{% endif %}>
             <a href="{% url "dashboard" %}">My Dashboard</a>
             </li>
-            <li {% if section == "images" %} class="selected"{% endif %}
-            <a href="#">Fridge</a>
+            <li {% if section == "fridge" %} class="selected"{% endif %}>
+            <a href="{% url "fridge" %}">Fridge</a>
             </li>
-            <li {% if section == "images" %} class="selected"{% endif %}
-            <a href="#">Recipe</a>
+            <li {% if section == "recipe" %} class="selected"{% endif %}>
+            <a href="{% url "recipe" %}">Recipe</a>
             </li>
         </ul>
     {% endif %}

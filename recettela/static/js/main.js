@@ -17,11 +17,12 @@ function find_location() {
 }
 
 function send_request_reverse_recipe() {
+    var csrftoken = getCookie('csrftoken');
     $.ajax({
         method: 'GET',
         url: 'http://127.0.0.1:8000/api/reverse_recipe',
-        beforeSend: function () {
-            console.log('before send');
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
         },
         success: function (result) {
             console.log(result);
@@ -34,15 +35,16 @@ function send_request_reverse_recipe() {
 }
 
 
-function send_request_fridge() {
+function send_request_fridge(isDelete = true) {
+    var csrftoken = getCookie('csrftoken');
     $.ajax({
         method: 'GET',
-        url: 'http://127.0.0.1:8000/api/foods',
-        beforeSend: function () {
-            console.log('before send');
+        url: 'http://127.0.0.1:8000/api/foodsUser',
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
         },
         success: function (result) {
-            update_list_foods(result);
+            update_list_foods(result, isDelete);
         },
         error: function () {
             console.log('error');
@@ -74,7 +76,8 @@ function recipe_information(pk) {
         url: 'https://api.spoonacular.com/recipes/' + pk + '/information?apiKey=04a5aef53bd442d28f3338d9b852be8b',
         type: 'GET',
         success: function (result) {
-            window.open(result['spoonacularSourceUrl'],'_blank');;
+            window.open(result['spoonacularSourceUrl'], '_blank');
+            ;
         },
         error: function () {
             console.log('error');
@@ -107,15 +110,15 @@ $("#formAdd").submit(function (e) {
 
 });
 
-function update_list_foods(data) {
+function update_list_foods(data, isDelete = true) {
     let row;
     let all_rows = '';
 
     Object.keys(data).forEach(key => {
         elem = data[key];
-        row = '<tr><td>' + elem['name'] + '</td>' + '<td>' +
-            '<button type="button" class="btn btn-danger" onclick="delete_food(' + elem['id'] + ')">DELETE</button>' +
-            '</td>' + '</tr>';
+        row = '<tr><td>' + elem['name'] + '</td>' + '<td>Expiration date : ' + elem['expiration_date'] + '</td>';
+        if (isDelete) row += '<td><button type="button" class="btn btn-danger" onclick="delete_food(' + elem['id'] + ')">DELETE</button></td>';
+        row += '</tr>';
         all_rows = all_rows + row;
     });
     $('#myFridge tbody').html(all_rows);

@@ -61,7 +61,7 @@ class ListCreateFoodView(generics.ListCreateAPIView):
         object.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
+@permission_classes([IsAuthenticated])
 class FoodList(APIView):
     """
     List all snippets, or create a new snippet.
@@ -81,7 +81,7 @@ class FoodList(APIView):
             return Response(serializer2.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+@permission_classes([IsAuthenticated])
 class FoodDetail(APIView):
     """
     Retrieve, update or delete a snippet instance.

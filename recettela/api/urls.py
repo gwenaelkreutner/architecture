@@ -11,7 +11,7 @@ router.register(r'groups', views.GroupViewSet)
 
 urlpatterns = [
     # path('foods/', views.food_list),
-    # url('foods/', views.ListCreateFoodView.as_view()),
+    url('foodsUser/', views.ListCreateFoodView.as_view()),
     path('foods/', views.FoodList.as_view()),
     path('foods/<int:pk>/', views.FoodDetail.as_view()),
     #path('foods/<int:pk>/', views.food_detail),
