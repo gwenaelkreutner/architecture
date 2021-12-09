@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %} Search {% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <h1>Search Recipe</h1>
+    </div>
+
+
+    <div class="container">
+        <div class="input-group">
+            <input type="text" id="location" size="50" placeholder="Location...">
+            <button class="btn btn-outline-primary" onclick="find_location()" type="button">Search</button>
+        </div>
+    </div>
+    <div class="container">
+        <table class="table" id="myTable">
+            <thead class="thead-dark">
+            <tr>
+                <th>Title</th>
+                <th>Image</th>
+                <th>More</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

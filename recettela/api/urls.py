@@ -2,7 +2,7 @@ from django.conf.urls import url
 from django.urls import path, include
 from rest_framework import routers
 
-from recettela.services.spoonacular import reverse_recipe
+from recettela.services.spoonacular import reverse_recipe, search_recipe
 from recettela.api import views
 
 router = routers.DefaultRouter()
@@ -17,4 +17,5 @@ urlpatterns = [
     #path('foods/<int:pk>/', views.food_detail),
     path('', include(router.urls)),
     url('reverse_recipe/', reverse_recipe, name='reverse_recipe'),
+    url('search_recipe/', search_recipe, name='search_recipe'),
 ]

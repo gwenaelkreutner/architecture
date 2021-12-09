@@ -74,3 +74,8 @@ def fridge_display(request):
 @login_required
 def recipe_display(request):
     return render(request, 'recipe_list.html')
+
+
+@login_required
+def search_recipe_display(request):
+    return render(request, 'search_recipes.html')

@@ -30,10 +30,17 @@ def reverse_recipe(request):
         str_food += food.__str__() + ",+"
     str_food = str_food[:-2]
 
-    print(str_food)
     r = requests.get(
-        'https://api.spoonacular.com/recipes/findByIngredients?ingredients='+str_food+'&apiKey=04a5aef53bd442d28f3338d9b852be8b&includeNutrition=true')
+        'https://api.spoonacular.com/recipes/findByIngredients?ingredients=' + str_food + '&apiKey=04a5aef53bd442d28f3338d9b852be8b&includeNutrition=true')
     if r.status_code == 200:
         json_food = r.json()
-        print(json_food)
         return JsonResponse(json_food, safe=False)
+
+
+@login_required
+def search_recipe(request):
+    r = requests.get(
+        'https://api.spoonacular.com/recipes/complexSearch?query=' + request.GET.get('query', '') + '&apiKey=04a5aef53bd442d28f3338d9b852be8b')
+    if r.status_code == 200:
+        json_food = r.json()
+        return JsonResponse(json_food['results'], safe=False)
