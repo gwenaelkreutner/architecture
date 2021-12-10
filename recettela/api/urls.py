@@ -2,7 +2,7 @@ from django.conf.urls import url
 from django.urls import path, include
 from rest_framework import routers
 
-from recettela.services.spoonacular import reverse_recipe, search_recipe
+from recettela.api.services.spoonacular import reverse_recipe, search_recipe
 from recettela.api import views
 
 router = routers.DefaultRouter()
